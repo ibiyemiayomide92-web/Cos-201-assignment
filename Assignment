@@ -1,0 +1,36 @@
+def calculate_tax(filing_status, income):
+    tax_brackets = [
+        [(8350, 0.10), (25100, 0.15), (48300, 0.25), (89200, 0.28), (201400, 0.33), (float('inf'), 0.35)],
+        [(16700, 0.10), (50200, 0.15), (69150, 0.25), (71700, 0.28), (164100, 0.33), (float('inf'), 0.35)],
+        [(8350, 0.10), (25100, 0.15), (34575, 0.25), (35850, 0.28), (82050, 0.33), (float('inf'), 0.35)],
+        [(11950, 0.10), (33550, 0.15), (71950, 0.25), (72750, 0.28), (182750, 0.33), (float('inf'), 0.35)]
+    ]
+
+    tax = 0
+    remaining_income = income
+    brackets = tax_brackets[filing_status]
+
+    for bracket, rate in brackets:
+        taxable_amount = min(remaining_income, bracket)
+        tax += taxable_amount * rate
+        remaining_income -= taxable_amount
+        if remaining_income <= 0:
+            break
+
+    return tax
+
+def main():
+    print("Enter your filing status:")
+    print("0: Single filers")
+    print("1: Married filing jointly or qualified widow(er)")
+    print("2: Married filing separately")
+    print("3: Head of household")
+
+    filing_status = int(input("Enter your filing status (0-3): "))
+    income = float(input("Enter your taxable income: $"))
+
+    tax = calculate_tax(filing_status, income)
+    print(f"Your total tax is: ${tax:.2f}")
+
+if __name__ == "__main__":
+    main()
